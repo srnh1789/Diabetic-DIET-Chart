@@ -233,7 +233,7 @@ function renderChart() {
     <div class="card hl"><div class="lbl">Diet target</div><div class="val">${b.target}</div><div class="sub">kcal/day · ${esc(GOAL_LABEL[p.goal])}</div></div>
     <div class="card"><div class="lbl">Body fat (estimate)</div><div class="val">${b.bodyFat}%</div><div class="sub">from BMI, age &amp; sex</div></div>
     <div class="card"><div class="lbl">Carbohydrate target</div><div class="val">~${b.carbTargetG} g</div><div class="sub">per day (about 45–50% of calories)</div></div>`;
-  $('notes').innerHTML = alertsFor(p, b).map(n => `<p class="warn">${esc(n)}</p>`).join('') +
+  $('alerts').innerHTML = alertsFor(p, b).map(n => `<p class="warn">${esc(n)}</p>`).join('') +
     `<p class="small">Healthy weight range for this height: ${b.healthyMin}–${b.healthyMax} kg (BMI 18.5–22.9).</p>`;
 
   $('dayTotal').innerHTML = `<strong>Total today: ${tot.k} kcal</strong> (target ${b.target}) · Carbohydrate ${tot.c.toFixed(0)} g
@@ -241,6 +241,7 @@ function renderChart() {
   $('meals').innerHTML = state.plan.map(mealCard).join('');
   document.querySelectorAll('details[data-meal]').forEach(d => d.addEventListener('toggle', () => { d.open ? state.open.add(d.dataset.meal) : state.open.delete(d.dataset.meal); }));
   document.querySelectorAll('input[data-meal-food]').forEach(cb => cb.addEventListener('change', onPick));
+  wireMix();
   document.querySelectorAll('button[data-addx]').forEach(btn => btn.addEventListener('click', () => {
     const key = btn.dataset.addx, box = btn.closest('.addx');
     const g = f => box.querySelector('[data-f=' + f + ']').value.trim();
@@ -266,7 +267,7 @@ function mealCard(m) {
   const rows = m.rows.map(r => r.isManual ? manualRow(r, key) : `
     <tr class="${r.isSalad ? 'saladrow' : ''}">
       <td><div class="fn">${r.isSalad ? '🥗 ' : ''}${esc(r.food.name_en)} <span class="gi ${esc(r.food.gi)}">${GI_LABEL[r.food.gi] || ''}</span></div>
-        <div class="te">${esc(r.food.name_te || '')}</div>${r.food.detail ? `<div class="det">${esc(r.food.detail)}</div>` : ''}</td>
+        <div class="te nm">${esc(r.food.name_te || '')}</div>${r.food.detail ? `<div class="det">${esc(r.food.detail)}</div>` : ''}</td>
       <td class="num">${frac(r.qty)} × ${esc(r.food.unit_label)}<div class="te">${r.grams} ${r.food.unit_measure}</div></td>
       <td class="num"><strong>${r.kcal}</strong> kcal<div class="te">C ${r.carbs} · P ${r.protein} · F ${r.fat}</div></td>
     </tr>`).join('');
@@ -283,6 +284,7 @@ function mealCard(m) {
       <div><h3>${m.meal.name} <small>${m.meal.te}</small></h3><div class="time">${m.meal.time}</div></div>
       <div class="mk"><strong>${m.kcal}</strong> / ${m.target} kcal<div class="te">Carbs ${m.carbs} g <span class="pill ${carbPct <= 55 ? 'ok' : 'hi'}">${carbPct}%</span></div></div></header>
     <table><thead><tr><th>Food</th><th class="num">Quantity</th><th class="num">Calories</th></tr></thead><tbody>${rows}</tbody></table>
+    ${exchangeBlock(m)}
     <details data-meal="${key}" ${state.open.has(key) ? 'open' : ''} class="noprint">
       <summary>Change foods for this meal</summary>
       <p class="hint">Tick the foods the patient eats; untick the rest. Quantities are re-adjusted to this meal's ${m.target} kcal. A vegetable salad is always included.</p>
@@ -299,6 +301,50 @@ function mealCard(m) {
       ${hasCustom ? `<button type="button" class="link" data-reset="${key}">Reset to suggested foods</button>` : ''}
     </details>
   </section>`;
+}
+
+/* "Eat any ONE of these" list: how much of each tiffin / roti / grain fits this meal's calories.
+   Chutney, curry, salad and manual foods stay fixed; the rest of the calories go to the chosen main food. */
+function exchangeBlock(m) {
+  const key = m.meal.key;
+  const fixed = m.rows.filter(r => r.food.role !== 'main').reduce((a, r) => a + r.kcal, 0);
+  const budget = Math.max(0, m.target - fixed);
+  const pool = FOOD_LIST.filter(f => f.active !== false && f.role === 'main' && f.meal_slots.includes(key) && allowed(f, state.cur.profile.dietPref));
+  if (!pool.length || budget < 40) return '';
+  const qtyFor = (f, b) => Math.max(f.step, Math.round(b / f.kcal_per_unit / f.step) * f.step);
+  const trs = pool.map(f => {
+    const q = qtyFor(f, budget);
+    return `<tr><td><label><input type="checkbox" data-mix="${key}" value="${esc(f.id)}"> <span class="fn">${esc(f.name_en)}</span>
+        <span class="gi ${esc(f.gi)}">${GI_LABEL[f.gi] || ''}</span></label><div class="te nm">${esc(f.name_te || '')}</div></td>
+      <td class="num"><strong>${frac(q)} × ${esc(f.unit_label)}</strong><div class="te">${Math.round(q * f.grams_per_unit)} ${f.unit_measure}</div></td>
+      <td class="num">${Math.round(q * f.kcal_per_unit)} kcal<div class="te">C ${+(q * f.carbs_g).toFixed(1)} g</div></td></tr>`;
+  }).join('');
+  return `
+    <div class="exch" data-exch="${key}" data-budget="${budget}">
+      <div class="exh">🔁 Quantity options – eat ANY ONE of these (day by day)</div>
+      <p class="hint">Quantity of each food that fits this meal's ${m.target} kcal, together with the chutney / curry / salad shown above (${fixed} kcal).
+      To mix two or more foods, tick them – the calories are shared equally.</p>
+      <table><thead><tr><th>Food</th><th class="num">Quantity</th><th class="num">Calories</th></tr></thead><tbody>${trs}</tbody></table>
+      <div class="mixout" data-mixout="${key}"></div>
+    </div>`;
+}
+function wireMix() {
+  document.querySelectorAll('input[data-mix]').forEach(cb => cb.addEventListener('change', () => {
+    const key = cb.dataset.mix, box = document.querySelector(`[data-exch="${key}"]`);
+    const budget = +box.dataset.budget;
+    const ids = [...box.querySelectorAll('input[data-mix]:checked')].map(x => x.value);
+    const out = box.querySelector('.mixout');
+    if (ids.length < 2) { out.innerHTML = ''; return; }
+    const foods = ids.map(id => FOOD_LIST.find(f => f.id === id));
+    const share = budget / foods.length;
+    const parts = foods.map(f => {
+      const q = Math.max(f.step, Math.round(share / f.kcal_per_unit / f.step) * f.step);
+      return { f, q, k: Math.round(q * f.kcal_per_unit) };
+    });
+    const tot = parts.reduce((a, p) => a + p.k, 0);
+    out.innerHTML = `<div class="mixbox"><strong>Mixed option:</strong> ${parts.map(p => `${frac(p.q)} ${esc(p.f.unit_label)} ${esc(p.f.name_en)}`).join(' + ')}
+      <span class="te"> = ${tot} kcal (aim ${Math.round(budget)})</span></div>`;
+  }));
 }
 
 function manualRow(r, key) {

@@ -17,6 +17,8 @@ const FOODS = [
   F('pesarattu', 'Pesarattu (green gram dosa)', 'పెసరట్టు', 'b,d', 'v', 'piece', 90, 110, 6.5, 15, 2.5, 'main', 'low', { max: 4 }),
   F('ragi-dosa', 'Ragi Dosa', 'రాగి దోశ', 'b,d', 'v', 'piece', 80, 100, 3, 19, 1.5, 'main', 'low', { max: 4 }),
   F('besan-chilla', 'Senagapindi Attu (besan chilla)', 'సెనగపిండి అట్టు', 'b,d', 'v', 'piece', 80, 120, 6, 12, 5, 'main', 'low', { max: 3 }),
+  F('dosa', 'Plain Dosa', 'దోశ', 'b,d', 'v', 'piece', 80, 130, 3, 22, 3, 'main', 'med', { max: 4 }),
+  F('upma', 'Rava Upma', 'ఉప్మా', 'b', 'v', 'bowl', 150, 210, 5, 33, 7, 'main', 'med', { max: 1.5, nd: true }),
   F('idli', 'Idli', 'ఇడ్లీ', 'b,d', 'v', 'piece', 40, 58, 2, 12, 0.3, 'main', 'med', { max: 3 }),
   F('veg-oats-upma', 'Vegetable Oats Upma', 'వెజ్ ఓట్స్ ఉప్మా', 'b', 'v', 'bowl', 150, 150, 5.5, 24, 3.5, 'main', 'low', { max: 2 }),
   F('korra-upma', 'Korra (foxtail millet) Upma', 'కొర్రల ఉప్మా', 'b', 'v', 'bowl', 150, 170, 5, 29, 4, 'main', 'low', { max: 2 }),
