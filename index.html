@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Diabetic Diet Chart – Sura Reddy Multi Speciality Hospital</title>
+<style>
+  :root { --g:#1a6b45; --g2:#e6f4ec; --ink:#1d2a24; --mut:#5b6b63; --bd:#d6e3dc; --bg:#f6f9f7; --warn:#7a4f00; --red:#b3261e; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family: system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans Telugu",sans-serif; color:var(--ink); background:var(--bg); line-height:1.45; }
+  .wrap { max-width: 920px; margin: 0 auto; padding: 14px; }
+  [hidden] { display:none !important; }
+  /* hospital header */
+  .brand { display:flex; align-items:center; gap:14px; background:#fff; border:1px solid var(--bd); border-bottom:4px solid var(--g); border-radius:14px; padding:12px 16px; }
+  .brand .logo { height:72px; width:auto; max-width:110px; object-fit:contain; }
+  .brand .txt { flex:1; text-align:center; }
+  .brand h1 { margin:0; font-size:1.45rem; color:var(--g); letter-spacing:.2px; }
+  .brand .addr { color:var(--mut); font-size:.9rem; }
+  .brand .ttl { margin-top:4px; font-weight:700; font-size:1rem; }
+  .demo { background:#fff6e0; color:var(--warn); border-radius:8px; padding:8px 12px; margin:10px 0; font-size:.9rem; }
+  form.panel, .panel { background:#fff; border:1px solid var(--bd); border-radius:14px; padding:18px; margin-top:14px; }
+  h2 { margin:0 0 10px; font-size:1.25rem; }
+  .grid { display:grid; grid-template-columns: 1fr 1fr; gap:14px; }
+  label.f { display:block; font-weight:600; font-size:.9rem; }
+  label.f input, label.f select, label.f textarea, .search { display:block; width:100%; margin-top:5px; padding:10px; font-size:1rem; border:1px solid var(--bd); border-radius:8px; background:#fff; font-family:inherit; }
+  .full { grid-column: 1 / -1; }
+  .sect { grid-column:1/-1; font-weight:700; color:var(--g); border-bottom:1px solid var(--bd); padding-bottom:4px; margin-top:6px; }
+  button { font-family:inherit; }
+  button.primary { background:var(--g); color:#fff; border:0; padding:12px 20px; font-size:1.02rem; border-radius:10px; cursor:pointer; }
+  button.sec { background:#fff; color:var(--g); border:1px solid var(--g); padding:9px 14px; border-radius:9px; cursor:pointer; font-size:.93rem; }
+  button.dangerbtn { background:#fff; color:var(--red); border:1px solid var(--red); padding:9px 14px; border-radius:9px; cursor:pointer; font-size:.93rem; }
+  button.link { background:none; border:0; color:var(--g); text-decoration:underline; cursor:pointer; padding:6px 0; }
+  .mini { background:#fff; color:var(--g); border:1px solid var(--g); border-radius:7px; padding:5px 9px; cursor:pointer; font-size:.82rem; margin:2px 2px 2px 0; }
+  .mini.danger { color:var(--red); border-color:var(--red); }
+  .msg { color:var(--red); min-height:1.2em; margin:6px 0 0; }
+  .small { color:var(--mut); font-size:.82rem; }
+  .bar { display:flex; flex-wrap:wrap; gap:8px; align-items:center; justify-content:space-between; margin:14px 0 8px; }
+  .bar .grp2 { display:flex; flex-wrap:wrap; gap:8px; }
+  .toast { position:fixed; left:50%; bottom:22px; transform:translateX(-50%); background:#1d2a24; color:#fff; padding:10px 18px; border-radius:10px; z-index:9; }
+  .toast.bad { background:var(--red); }
+  /* list */
+  table { width:100%; border-collapse:collapse; }
+  th, td { text-align:left; padding:9px 12px; border-top:1px solid var(--bd); vertical-align:top; }
+  th { font-size:.76rem; color:var(--mut); text-transform:uppercase; border-top:0; }
+  .num { text-align:right; } .te { color:var(--mut); font-size:.82rem; font-weight:400; } .empty { text-align:center; color:var(--mut); padding:26px; }
+  .act { white-space:nowrap; }
+  /* patient & summary */
+  #patientCard { display:grid; grid-template-columns:repeat(3,1fr); gap:8px 16px; background:#fff; border:1px solid var(--bd); border-radius:12px; padding:12px 16px; margin:12px 0; font-size:.92rem; }
+  #patientCard .k { display:block; font-size:.72rem; color:var(--mut); text-transform:uppercase; letter-spacing:.03em; }
+  #patientCard .wide { grid-column:1/-1; }
+  #summary { display:grid; grid-template-columns: repeat(3,1fr); gap:10px; margin:12px 0; }
+  .card { background:#fff; border:1px solid var(--bd); border-radius:12px; padding:12px; }
+  .card.hl { background:var(--g2); border-color:var(--g); }
+  .lbl { font-size:.74rem; color:var(--mut); text-transform:uppercase; letter-spacing:.03em; }
+  .val { font-size:1.6rem; font-weight:700; color:var(--g); } .sub { font-size:.8rem; color:var(--mut); }
+  .warn { background:#fff6e0; color:var(--warn); border-radius:8px; padding:8px 12px; margin:6px 0; }
+  #dayTotal { background:var(--g2); border-radius:10px; padding:10px 14px; margin:8px 0 14px; }
+  .pill { display:inline-block; font-size:.75rem; border-radius:999px; padding:1px 8px; margin-left:4px; }
+  .pill.ok { background:#d4eddf; color:#14532d; } .pill.hi { background:#fde2cf; color:#8a3b00; }
+  .meal { background:#fff; border:1px solid var(--bd); border-radius:14px; margin:14px 0; overflow:hidden; }
+  .meal header { display:flex; align-items:center; gap:12px; padding:12px 16px; background:var(--g2); }
+  .meal header h3 { margin:0; font-size:1.08rem; } .meal header small { color:var(--mut); font-weight:400; margin-left:6px; }
+  .meal .ic { font-size:1.6rem; } .time { color:var(--mut); font-size:.85rem; } .mk { margin-left:auto; text-align:right; }
+  .fn { font-weight:600; } .det { font-size:.8rem; color:#355e48; margin-top:2px; }
+  .saladrow td { background:#f3fbf6; } .manualrow td { background:#fffaf0; }
+  .addx { display:flex; flex-wrap:wrap; gap:6px; align-items:center; }
+  .addx input { padding:7px; border:1px solid var(--bd); border-radius:8px; font-size:.9rem; width:125px; }
+  .addx input[data-f=name] { width:190px; }
+  .gi { font-size:.68rem; font-weight:600; border-radius:6px; padding:1px 6px; margin-left:4px; vertical-align:middle; }
+  .gi.low { background:#d4eddf; color:#14532d; } .gi.med { background:#fff0c2; color:#7a5200; } .gi.high { background:#fbd5d0; color:#8c1d14; }
+  details { padding:8px 16px 12px; border-top:1px solid var(--bd); }
+  summary { cursor:pointer; color:var(--g); font-weight:600; }
+  .hint { color:var(--mut); font-size:.88rem; margin:6px 0; }
+  .grp { font-weight:700; font-size:.82rem; color:var(--mut); margin:10px 0 4px; }
+  .chips { display:flex; flex-wrap:wrap; gap:7px; }
+  .chip { border:1px solid var(--bd); border-radius:999px; padding:5px 11px; font-size:.84rem; cursor:pointer; background:#fff; }
+  .chip input { margin-right:5px; }
+  .two { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:14px 0; }
+  .two .panel { margin:0; padding:12px 16px; font-size:.9rem; } .two h4 { margin:0 0 6px; }
+  .two ul { margin:0; padding-left:18px; }
+  .sign { display:none; justify-content:space-between; margin-top:40px; font-size:.9rem; }
+  footer { color:var(--mut); font-size:.8rem; margin:22px 0; }
+  @media (max-width:640px) { .grid, .two { grid-template-columns:1fr; } #summary, #patientCard { grid-template-columns:1fr 1fr; } th, td { padding:8px 8px; } .brand .logo { height:48px; max-width:64px; } .brand h1 { font-size:1.05rem; } }
+  @media print {
+    .noprint, .bar, #toast { display:none !important; } body { background:#fff; } .wrap { padding:0; }
+    .meal { break-inside:avoid; } .sign { display:flex; } .panel, .card, .meal, .brand { border-color:#999; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand">
+    <img class="logo" src="logo1.png" alt="" onerror="this.remove()">
+    <div class="txt">
+      <h1>Sura Reddy Multi Speciality Hospital</h1>
+      <div class="addr">Pandalapaka, Biccavolu Mandal, East Godavari District, Andhra Pradesh</div>
+      <div class="ttl">Diabetic Diet Chart · మధుమేహ ఆహార పట్టిక</div>
+    </div>
+    <img class="logo" src="logo2.png" alt="" onerror="this.remove()">
+  </div>
+  <div class="demo noprint" id="demoBanner" hidden>Demo mode: patient records are saved only in this browser. Add the Supabase keys in <code>config.js</code> to save them online for all staff.</div>
+
+  <!-- LOGIN -->
+  <div id="loginView" hidden>
+    <form class="panel" id="loginForm" style="max-width:420px;margin-left:auto;margin-right:auto">
+      <h2>Staff login</h2>
+      <label class="f">Email <input id="email" type="email" required autocomplete="username"></label>
+      <label class="f" style="margin-top:12px">Password <input id="password" type="password" required autocomplete="current-password"></label>
+      <p class="msg" id="loginMsg"></p>
+      <button class="primary" type="submit" style="width:100%">Login</button>
+      <p class="small">Only hospital staff accounts created in Supabase can log in.</p>
+    </form>
+  </div>
+
+  <!-- PATIENT LIST -->
+  <div id="listView" hidden>
+    <div class="bar">
+      <h2 style="margin:0">Patients <span class="te" id="count"></span></h2>
+      <div class="grp2"><button class="primary" id="newBtn" type="button">＋ New patient</button><button class="sec" id="logoutBtn" type="button" hidden>Log out</button></div>
+    </div>
+    <input class="search" id="searchBox" placeholder="Search by name, UHID or phone">
+    <div class="panel" style="padding:4px 0;overflow-x:auto">
+      <table><thead><tr><th>Patient</th><th>Age/Sex</th><th>Diabetes</th><th class="num">Target</th><th>Updated</th><th></th></tr></thead><tbody id="listBody"></tbody></table>
+    </div>
+  </div>
+
+  <!-- PATIENT FORM -->
+  <div id="formView" hidden>
+    <form class="panel grid" id="profileForm" autocomplete="off">
+      <h2 class="full" id="formTitle">New patient</h2>
+      <div class="sect">Patient details</div>
+      <label class="f full">Name <input id="name" required maxlength="80"></label>
+      <label class="f">UHID / OP number (optional) <input id="uhid" maxlength="30"></label>
+      <label class="f">Phone (optional) <input id="phone" maxlength="15" inputmode="tel"></label>
+      <label class="f">Age (years) <input id="age" type="number" required min="5" max="100" inputmode="numeric"></label>
+      <label class="f">Sex <select id="sex" required><option value="">Select</option><option value="male">Male</option><option value="female">Female</option></select></label>
+      <label class="f">Height (cm) <input id="height" type="number" required min="90" max="230" step="0.1" inputmode="decimal"></label>
+      <label class="f">Weight (kg) <input id="weight" type="number" required min="15" max="250" step="0.1" inputmode="decimal"></label>
+      <label class="f full">Lifestyle (daily activity)
+        <select id="activity" required>
+          <option value="">Select</option>
+          <option value="sedentary">Sedentary – desk job, little walking</option>
+          <option value="light">Light – walking / light work, exercise 1–3 days a week</option>
+          <option value="moderate">Moderate – on feet most of the day, exercise 3–5 days a week</option>
+          <option value="active">Active – farming / heavy work, hard exercise 6–7 days</option>
+          <option value="very">Very active – very heavy physical work</option>
+        </select></label>
+      <div class="sect">Diabetes details</div>
+      <label class="f">Type <select id="dtype"><option value="t2">Type 2 diabetes</option><option value="t1">Type 1 diabetes</option><option value="pre">Pre-diabetes</option></select></label>
+      <label class="f">Treatment <select id="treatment"><option value="diet">Diet only</option><option value="tablets">Oral tablets</option><option value="insulin">Insulin</option><option value="both">Tablets + insulin</option></select></label>
+      <label class="f">HbA1c % (optional) <input id="hba1c" type="number" min="3" max="20" step="0.1" inputmode="decimal"></label>
+      <label class="f">Fasting sugar mg/dL (optional) <input id="fbs" type="number" min="30" max="700" inputmode="numeric"></label>
+      <label class="f">Post-meal sugar mg/dL (optional) <input id="ppbs" type="number" min="30" max="900" inputmode="numeric"></label>
+      <label class="f">Goal
+        <select id="goal"><option value="maintain">Maintain weight</option><option value="lose">Lose weight</option><option value="gain">Gain weight</option></select></label>
+      <label class="f full">Food type
+        <select id="dietPref"><option value="veg">Vegetarian</option><option value="egg">Vegetarian + Egg</option><option value="nonveg">Non-vegetarian (fish, prawns, chicken, egg)</option></select></label>
+      <label class="f full">Doctor's notes (kidney / BP / other conditions, allergies) <textarea id="notes" rows="2" maxlength="400"></textarea></label>
+      <div class="full" style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="primary" type="submit">Make diet chart</button>
+        <button class="sec" type="button" id="cancelFormBtn">Cancel</button>
+      </div>
+      <p class="msg full" id="formMsg"></p>
+    </form>
+  </div>
+
+  <!-- CHART -->
+  <div id="chartView" hidden>
+    <div class="bar">
+      <button class="sec" id="listBtn" type="button">← Patients</button>
+      <div class="grp2">
+        <button class="primary" id="saveBtn" type="button">💾 Save patient</button>
+        <button class="sec" id="editBtn" type="button">✏️ Edit details</button>
+        <button class="sec" id="shuffleBtn" type="button">🔄 Different foods</button>
+        <button class="sec" id="printBtn" type="button">🖨 Print</button>
+        <button class="dangerbtn" id="deleteBtn" type="button" hidden>🗑 Delete</button>
+      </div>
+    </div>
+    <div id="patientCard"></div>
+    <div id="summary"></div>
+    <div id="notes"></div>
+    <div id="dayTotal"></div>
+    <div id="meals"></div>
+    <p class="small">Calories are split: Morning tiffin 25% · 10 AM snack 10% · Lunch 30% · 4 PM snack 10% · Dinner 25%. A vegetable salad is included in every meal.</p>
+    <div class="two">
+      <div class="panel"><h4>✅ Advice</h4><ul>
+        <li>Do not skip meals; eat at fixed times.</li>
+        <li>Fill half the plate with vegetables / salad, a quarter with protein, a quarter with millet / roti.</li>
+        <li>Prefer jowar, ragi, bajra, korra (millets) and whole wheat; limit white rice.</li>
+        <li>Use little oil (about 3 teaspoons per person per day); steam, boil, grill or tawa-cook.</li>
+        <li>Drink 8–10 glasses of water. Walk 10–15 minutes after meals; exercise 30 minutes daily.</li>
+        <li>Check blood sugar as advised by the doctor.</li>
+      </ul></div>
+      <div class="panel"><h4>⛔ Avoid</h4><ul>
+        <li>Sugar, jaggery, honey, sweets (kaja, pootharekulu, laddu, jilebi), cakes, biscuits.</li>
+        <li>Fruit juices, cold drinks, sweetened tea / coffee, tender coconut water in excess.</li>
+        <li>Banana, mango, sapota, grapes, jackfruit, dates.</li>
+        <li>Fried items (punugulu, bajji, vada, puri), bakery items, maida.</li>
+        <li>Potato, yam, sweet potato, arati (raw banana) in large amounts.</li>
+        <li>Large servings of white rice; skipping meals; alcohol.</li>
+      </ul></div>
+    </div>
+    <div class="sign"><div>Dietitian signature: ____________________</div><div>Doctor signature: ____________________</div></div>
+  </div>
+
+  <footer>
+    <div id="dbStatus" class="noprint"></div>
+    This chart is a general guide prepared with standard formulas and approximate food values; it does not replace a doctor's advice. Doses of tablets / insulin and any change in treatment must be decided by the treating doctor.
+  </footer>
+</div>
+<div class="toast" id="toast" hidden></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
+<script src="foods.js"></script>
+<script src="calc.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
